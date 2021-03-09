@@ -5,7 +5,6 @@ using System.Text;
 namespace ModelSzkicu {
     public class Widok {
 
-        public enum TypWidoku { o, v, u, h }
         //
         public TypWidoku Typ { get; set; }
         //
@@ -21,4 +20,6 @@ namespace ModelSzkicu {
         }
 
     }
+    
+    public enum TypWidoku { o, v, u, h }
 }
