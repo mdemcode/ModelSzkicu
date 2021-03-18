@@ -22,9 +22,21 @@ namespace ModelSzkicu {
             Luki = new();
         }
 
-        public void DodajLinieKonturu(double x1, double x2, double y1, double y2, bool ukryta) {
-            LinieKonturowe.Add(new(x1, x2, y1, y2, ukryta));
-        }
+        //public void DodajLinieKonturu(LiniaKonturowa linia) {
+        //    LinieKonturowe.Add(linia);
+        //}
+        //public void DodajOtwor(Otwor otwor) {
+        //    Otwory.Add(otwor);
+        //}
+        //public void DodajFasolke(Fasolka fasolka) {
+        //    Fasolki.Add(fasolka);
+        //}
+        //public void DodajLuk(Luk luk) {
+        //    Luki.Add(luk);
+        //}
+        // lub przez widok.LinieKonturowe.Add(linia) ???
+
+        //Dodaj wymiary
 
     }
     
