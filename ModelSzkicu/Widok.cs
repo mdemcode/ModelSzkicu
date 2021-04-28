@@ -41,4 +41,5 @@ namespace ModelSzkicu {
     }
     
     public enum TypWidoku { o, v, u, h }
+
 }

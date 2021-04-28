@@ -4,4 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="DSTVmodel">
+      <HintPath>..\..\..\..\OneDrive\Pulpit\DSTVmodel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
