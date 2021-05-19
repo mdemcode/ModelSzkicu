@@ -8,28 +8,38 @@ using DSTVmodel;
 namespace ModelSzkicu {
     public class Szkic {
 
-        public List<Widok> Widoki { get; private set; }
-        public Widok WidokO => Widoki.Single(w => w.Typ == TypWidoku.o) ?? null;
-        public Widok WidokV => Widoki.Single(w => w.Typ == TypWidoku.v) ?? null;
-        public Widok WidokU => Widoki.Single(w => w.Typ == TypWidoku.u) ?? null;
-        public Widok WidokH => Widoki.Single(w => w.Typ == TypWidoku.h) ?? null;
+        public List<string> BledySzkicu { get; } = new(); // "[typ błędu]: opis błędu"
+        //
+        public List<Widok> Widoki { get; } = new();
+        public Widok WidokO => Widoki.Single(w => w.Typ == TypWidoku.o);
+        public Widok WidokV => Widoki.Single(w => w.Typ == TypWidoku.v);
+        public Widok WidokU => Widoki.Single(w => w.Typ == TypWidoku.u);
+        public Widok WidokH => Widoki.Single(w => w.Typ == TypWidoku.h);
+        //
+
         // metadane z dstv
         public string NazwaPliku => _dstvModel.NazwaPliku;
-
         public int Szt => _dstvModel.Szt;
         // itd. ...
 
         // prywatne
-        private DstvModel _dstvModel;
-        private bool _bladWczytaniaPliku => !_dstvModel.PlikWczytany || _dstvModel.WczytanyZBledami;
+        private readonly DstvModel _dstvModel;
 
         public Szkic(string adresPlikuNc) {
-            _dstvModel = new DstvModel(adresPlikuNc);
-            if (_bladWczytaniaPliku) return;
-            Widoki = new();
+            _dstvModel = new(adresPlikuNc);
+            if (_dstvModel.WczytanyZBledami) {
+                ImportujBledyWczytywaniaDstv();
+                return;
+            }
+            // // //
 
         }
 
+        private void ImportujBledyWczytywaniaDstv() {
+            foreach (var blad in _dstvModel.BledyWczytywania) {
+                BledySzkicu.Add($"[Błąd wczytywania DSTV]: {blad}");
+            }
+        }
         private void WczytajGeometrieZModeluDstv() {
 
         }

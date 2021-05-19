@@ -15,7 +15,7 @@ namespace ModelSzkicu.Tools {
         public static string DigitsOnly(this string value) {
             if (string.IsNullOrEmpty(value)) return value;
             var arr = value.ToCharArray();
-            return arr.Where(item => char.IsNumber(item) || item == '.' || item == ',' || item == '-').Aggregate<char, string>(null, (current, item) => current + item);
+            return arr.Where(item => char.IsNumber(item) || item is '.' or ',' or '-').Aggregate<char, string>(null, (current, item) => current + item);
         }
         public static double GetDouble(this string value) {
             const double defaultValue = 0;

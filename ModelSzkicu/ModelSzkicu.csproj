@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Reference Include="DSTVmodel">
-      <HintPath>..\..\..\..\OneDrive\Pulpit\DSTVmodel.dll</HintPath>
+      <HintPath>..\..\..\..\OneDrive\Pulpit\DllTools\DSTVmodel.dll</HintPath>
     </Reference>
   </ItemGroup>
 
