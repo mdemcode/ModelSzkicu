@@ -16,12 +16,13 @@ namespace ModelSzkicu {
             R = r;
             Ukryty = ukryty;
         }
-        public Luk(Punkt startPoint, Punkt endPoint, double r, bool ukryty) {
-            StartPoint = startPoint.X < endPoint.X ? startPoint : endPoint; // - startpoint zawsze po lewej
-            EndPoint = startPoint.X < endPoint.X ? endPoint : startPoint;
-            R = r;
-            Ukryty = ukryty;
-        }
+        public Luk(Punkt startPoint, Punkt endPoint, double r, bool ukryty) : this(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y, r, ukryty) {}
+        //{
+        //    StartPoint = startPoint.X < endPoint.X ? startPoint : endPoint; // - startpoint zawsze po lewej
+        //    EndPoint = startPoint.X < endPoint.X ? endPoint : startPoint;
+        //    R = r;
+        //    Ukryty = ukryty;
+        //}
 
         public override void Przesun(double dx, double dy) {
             StartPoint.Przesun(dx, dy);

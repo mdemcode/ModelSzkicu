@@ -10,9 +10,10 @@ namespace ModelSzkicu {
         public Fasolka(double centerX, double centerY, double fi, double dlugosc) : base(centerX, centerY, fi) {
             Dlugosc = dlugosc;
         }
-        public Fasolka(Punkt centerPoint, double fi, double dlugosc) : base(centerPoint, fi) {
-            Dlugosc = dlugosc;
-        }
+        public Fasolka(Punkt centerPoint, double fi, double dlugosc) : this(centerPoint.X, centerPoint.Y, fi, dlugosc) {}
+        //    : base(centerPoint, fi) {
+        //    Dlugosc = dlugosc;
+        //}
     }
 }
 

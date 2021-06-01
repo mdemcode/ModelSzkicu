@@ -3,25 +3,18 @@
 namespace ModelSzkicu {
     public abstract class Linia : ElementRysunku {
 
-        //public double X1 { get; set; }
-        //public double Y1 { get; set; }
-        //public double X2 { get; set; }
-        //public double Y2 { get; set; }
         public Punkt StartPoint { get; set; }
         public Punkt EndPoint { get; set; }
 
         public Linia(double x1, double y1, double x2, double y2) {
-            //X1 = x1;
-            //X2 = x2;
-            //Y1 = y1;
-            //Y2 = y2;
             StartPoint = x1 < x2 ? new (x1, y1) : new (x2, y2); // - startpoint zawsze po lewej
             EndPoint = x1 < x2 ? new (x2, y2) : new (x1, y1); // - endpoint zawsze po prawej
         }
-        public Linia(Punkt pkt1, Punkt pkt2) {
-            StartPoint = pkt1.X < pkt2.X ? pkt1 : pkt2; // - startpoint zawsze po lewej
-            EndPoint = pkt1.X < pkt2.X ? pkt2 : pkt1;
-        }
+        public Linia(Punkt startPoint, Punkt endPoint) : this(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y) {}
+        //{
+        //    StartPoint = startPoint.X < endPoint.X ? startPoint : endPoint; // - startpoint zawsze po lewej
+        //    EndPoint = startPoint.X < endPoint.X ? endPoint : startPoint;
+        //}
         
         public override void Przesun(double dx, double dy) {
             StartPoint.Przesun(dx, dy);

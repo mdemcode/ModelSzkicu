@@ -14,10 +14,11 @@ namespace ModelSzkicu {
             Ukryta = ukryta;
             if (ukryta) Grubosc *= 0.7;
         }
-        public LiniaKonturowa(Punkt startPoint, Punkt endPoint, bool ukryta) : base(startPoint, endPoint) {
-            Ukryta = ukryta;
-            if (ukryta) Grubosc *= 0.7;
-        }
+        public LiniaKonturowa(Punkt startPoint, Punkt endPoint, bool ukryta) : this(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y, ukryta) {}
+        //    : base(startPoint, endPoint) {
+        //    Ukryta = ukryta;
+        //    if (ukryta) Grubosc *= 0.7;
+        //}
 
     }
 }

@@ -16,9 +16,10 @@ namespace ModelSzkicu {
             Grubosc *= 0.5;
             Typ = typ;
         }
-        public LiniaWymiarowa(Punkt pkt1, Punkt pkt2, TypLiniiWymiarowej typ) : base(pkt1, pkt2) { // kolejnosc punktow nie ma znaczenia
-            Grubosc *= 0.5;
-            Typ = typ;
-        }
+        public LiniaWymiarowa(Punkt pkt1, Punkt pkt2, TypLiniiWymiarowej typ) : this(pkt1.X, pkt1.Y, pkt2.X, pkt2.Y, typ) {}
+        //    : base(pkt1, pkt2) { // kolejnosc punktow nie ma znaczenia
+        //    Grubosc *= 0.5;
+        //    Typ = typ;
+        //}
     }
 }
