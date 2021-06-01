@@ -18,6 +18,10 @@ namespace ModelSzkicu {
             StartPoint = x1 < x2 ? new (x1, y1) : new (x2, y2); // - startpoint zawsze po lewej
             EndPoint = x1 < x2 ? new (x2, y2) : new (x1, y1); // - endpoint zawsze po prawej
         }
+        public Linia(Punkt pkt1, Punkt pkt2) {
+            StartPoint = pkt1.X < pkt2.X ? pkt1 : pkt2; // - startpoint zawsze po lewej
+            EndPoint = pkt1.X < pkt2.X ? pkt2 : pkt1;
+        }
         
         public override void Przesun(double dx, double dy) {
             StartPoint.Przesun(dx, dy);

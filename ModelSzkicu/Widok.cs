@@ -5,7 +5,6 @@ using System.Text;
 namespace ModelSzkicu {
     public class Widok {
 
-        //
         public TypWidoku Typ { get; set; }
         //
         public List<LiniaKonturowa> LinieKonturowe { get; set; }

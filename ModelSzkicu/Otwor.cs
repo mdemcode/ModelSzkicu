@@ -12,6 +12,10 @@ namespace ModelSzkicu {
             CenterPoint = new (centerX, centerY);
             Fi = fi;
         }
+        public Otwor(Punkt centerPoint, double fi) {
+            CenterPoint = centerPoint;
+            Fi = fi;
+        }
 
         public override void Przesun(double dx, double dy) {
             CenterPoint.Przesun(dx, dy);

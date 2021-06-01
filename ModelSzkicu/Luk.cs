@@ -11,8 +11,14 @@ namespace ModelSzkicu {
         public bool Ukryty { get; set; }
 
         public Luk(double startX, double startY, double endX, double endY, double r, bool ukryty) {
-            StartPoint = new (startX, startY);
-            EndPoint = new (endX, endY);
+            StartPoint = startX < endX ? new (startX, startY) : new (endX, endY); // StartPoint zawsze po lewej
+            EndPoint = startX < endX ? new (endX, endY) :  new (startX, startY);
+            R = r;
+            Ukryty = ukryty;
+        }
+        public Luk(Punkt startPoint, Punkt endPoint, double r, bool ukryty) {
+            StartPoint = startPoint.X < endPoint.X ? startPoint : endPoint; // - startpoint zawsze po lewej
+            EndPoint = startPoint.X < endPoint.X ? endPoint : startPoint;
             R = r;
             Ukryty = ukryty;
         }
