@@ -5,14 +5,20 @@ using System.Text;
 namespace ModelSzkicu {
     public class Otwor : ElementRysunku {
 
-        public double CenterX { get; set; }
-        public double CenterY { get; set; }
+        public Punkt CenterPoint {get; set; }
         public double Fi { get; set; }
 
         public Otwor(double centerX, double centerY, double fi) {
-            CenterX = centerX;
-            CenterY = centerY;
+            CenterPoint = new (centerX, centerY);
             Fi = fi;
+        }
+
+        public override void Przesun(double dx, double dy) {
+            CenterPoint.Przesun(dx, dy);
+        }
+        public override void Skaluj(double wspolczynnik) {
+            CenterPoint.Skaluj(wspolczynnik);
+            Fi *= wspolczynnik;
         }
     }
 }

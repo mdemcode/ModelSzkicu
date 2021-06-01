@@ -16,7 +16,7 @@ namespace ModelSzkicu {
         public Widok WidokU => Widoki.Single(w => w.Typ == TypWidoku.u);
         public Widok WidokH => Widoki.Single(w => w.Typ == TypWidoku.h);
         //
-
+        public IEnumerable<ElementRysunku> WszystkieElementySzkicu => ElementySzkicu();
         // metadane z dstv
         public string NazwaPliku => _dstvModel.NazwaPliku;
         public int Szt => _dstvModel.Szt;
@@ -42,6 +42,17 @@ namespace ModelSzkicu {
         }
         private void WczytajGeometrieZModeluDstv() {
 
+        }
+
+        private IEnumerable<ElementRysunku> ElementySzkicu() {
+            var outList = new List<ElementRysunku>();
+            Widoki.ForEach(w => {
+                outList.AddRange(w.LinieKonturowe);
+                outList.AddRange(w.Luki);
+                outList.AddRange(w.Otwory);
+                outList.AddRange(w.Fasolki);
+            });
+            return outList;
         }
 
     }
