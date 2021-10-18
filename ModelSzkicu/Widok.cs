@@ -7,18 +7,21 @@ namespace ModelSzkicu {
 
         public TypWidoku Typ { get; set; }
         //
-        public List<LiniaKonturowa> LinieKonturowe { get; set; }
-        // linie wymiarowe czy całe wymiary ???
+        //public List<LiniaKonturowa> LinieKonturowe { get; set; }
+        //public List<Luk> Luki { get; set; }
+        public List<Kontur> Kontury { get; } // jeden zewn., zero-kilka wewn.
         public List<Otwor> Otwory { get; set; }
         public List<Fasolka> Fasolki { get; set; }
-        public List<Luk> Luki { get; set; }
+        // linie wymiarowe czy całe wymiary ???
+        // cechowanie, znakowanie, itp. ...
 
         public Widok(TypWidoku typ) {
             Typ = typ;
-            LinieKonturowe = new();
+            //LinieKonturowe = new();
+            //Luki = new();
+            Kontury = new();
             Otwory = new();
             Fasolki = new();
-            Luki = new();
         }
 
         //public void DodajLinieKonturu(LiniaKonturowa linia) {
@@ -39,6 +42,6 @@ namespace ModelSzkicu {
 
     }
     
-    public enum TypWidoku { o, v, u, h }
+    public enum TypWidoku { o, v, u, h, err }
 
 }

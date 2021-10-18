@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="DSTVmodel">
-      <HintPath>..\..\..\..\OneDrive\Pulpit\DllTools\DSTVmodel.dll</HintPath>
-    </Reference>
+    <PackageReference Include="DSTVmodel" Version="1.0.5" />
   </ItemGroup>
 
 </Project>
