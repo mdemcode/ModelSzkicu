@@ -81,9 +81,11 @@ namespace ModelSzkicu {
                 switch (blok.Typ) {
                     case TypBloku.ST:
                         break;
-                    case TypBloku.AK: // kontury
-                    case TypBloku.IK:
-
+                    case TypBloku.AK: // kontur zewn.
+                        ImportujKonturZmodeluDstv(blok.WierszeBloku, true);
+                        break;
+                    case TypBloku.IK: // kontur wewn.
+                        ImportujKonturZmodeluDstv(blok.WierszeBloku, false);
                         break;
                     case TypBloku.BO: // otwory / fasolki
                         foreach (string wiersz in blok.WierszeBloku) {
@@ -159,6 +161,18 @@ namespace ModelSzkicu {
                 //
                 poprzPkt = aktPkt;
             }
+            Widok widokSzkicu = typWidoku switch {
+                TypWidoku.o => WidokO,
+                TypWidoku.v => WidokV,
+                TypWidoku.u => WidokU,
+                TypWidoku.h => WidokH,
+                _ => null
+            };
+            if (widokSzkicu == null) {
+                BledySzkicu.Add(("Błąd importu konturu z modelu DSTV", $"Nieobsługiwany typ widoku: '{typWidoku}"));
+                return;
+            }
+            widokSzkicu.Kontury.Add(kontur);
         }
 
         private void ImportujOtworZmodeluDstv (string wierszBlokuBO) {
