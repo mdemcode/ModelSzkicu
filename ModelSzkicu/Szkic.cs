@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using DSTVmodel;
 using ModelSzkicu.Tools;
 
-namespace ModelSzkicu {
+namespace ModelSzkicu 
+{
     public class Szkic {
 
         // model dstv
-        public DstvModel _dstvModel;
+        private DstvModel _dstvModel;
+        //public DstvModel DstvModel => _dstvModel;
         // błędy szkicu
         public List<(string typ, string opis)> BledySzkicu { get; } = new(); // "[typ błędu]: opis błędu"
         public bool MaBledy => BledySzkicu.Any();
@@ -57,14 +59,14 @@ namespace ModelSzkicu {
                 case ZrodloSzkicu.BazaDanych:
                     break;
                 default:
-                    BledySzkicu.Add(("Błąd tworzenia szkicu", "Nieobsługiwane źródło pliku!"));
+                    BledySzkicu.Add(("Błąd tworzenia szkicu", "Nieobsługiwane źródło szkicu!"));
                     break;
             }
         }
         #endregion
 
 
-        #region WCZYTANIE DANYCH Z MODELU DSTV
+        #region WCZYTANIE SZKICU Z MODELU DSTV
         public bool WczytajZPlikuNc(string adresPlikuNc) {
             _zrodloSzkicu = ZrodloSzkicu.PlikNC;
             _dstvModel = new(adresPlikuNc);
@@ -116,7 +118,6 @@ namespace ModelSzkicu {
             });
             return true;
         }
-
         private void ImportujKonturZmodeluDstv (string[] wierszeBloku, bool zewn) {
             if (!OdczytajTypWidokuZWierszaBloku(wierszeBloku[0], out TypWidoku typWidoku)) return;
             Kontur.TypKonturu typ = zewn ? Kontur.TypKonturu.Zewn : Kontur.TypKonturu.Wewn;
@@ -126,7 +127,7 @@ namespace ModelSzkicu {
             double promienLuku = 0d;
             foreach (string w in wierszeBloku) {
                 string wiersz = w;
-                if (wiersz.Trim().StartsWith(typWidoku.ToString())) wiersz = wiersz.Trim()[1..];
+                if (wiersz.Trim().StartsWith(typWidoku.ToString())) wiersz = wiersz.Trim()[1..]; // odcięcie pierwszwego znaku, jeśli to znak typu widoku (o, v, u, h)
                 string[] rozbityWiersz = wiersz.Split().Where(x => !string.IsNullOrEmpty(x)).ToArray();
                 if ( rozbityWiersz[1].Last() == 't' || rozbityWiersz[1].Last() == 'w') continue; // promienie w narożach - ignoruję
                 var wspPunktu = rozbityWiersz.Select(x => x.DigitsOnly())
@@ -174,7 +175,6 @@ namespace ModelSzkicu {
             }
             widokSzkicu.Kontury.Add(kontur);
         }
-
         private void ImportujOtworZmodeluDstv (string wierszBlokuBO) {
             string [] rozbityWiersz = wierszBlokuBO.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             // widok:
@@ -218,7 +218,6 @@ namespace ModelSzkicu {
             if (fasolka) widokSzkicu.Fasolki.Add((Fasolka)nowyOtwor);
             else widokSzkicu.Otwory.Add(nowyOtwor);
         }
-
         private bool OdczytajTypWidokuZWierszaBloku(string wiersz, out TypWidoku typOut) {
             string[] rozbityWiersz = wiersz.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             typOut = TypWidoku.err;
@@ -228,15 +227,14 @@ namespace ModelSzkicu {
             }
             catch (Exception e) {
                 if (e is ArgumentOutOfRangeException) {
-                    BledySzkicu.Add(("Błąd importu geometrii z modelu DSTV", $"Nierozpoznany typ widoku: '{rozbityWiersz[0]}. Oryginalny wiersz: [{wiersz}]"));
+                    BledySzkicu.Add(("Błąd importu geometrii z modelu DSTV", $"Nierozpoznany typ widoku: '{rozbityWiersz[0]}. Original DSTV source row: [{wiersz}]"));
                 }
                 else {
-                    BledySzkicu.Add(("Błąd importu geometrii z modelu DSTV", $"{e.Message} # {e.InnerException?.Message ?? "_"}. Oryginalny wiersz: [{wiersz}]"));
+                    BledySzkicu.Add(("Błąd importu geometrii z modelu DSTV", $"{e.Message} # {e.InnerException?.Message ?? "_"}. Original DSTV source row: [{wiersz}]"));
                 }
                 return false;
             }
         }
-
         #endregion
 
         #region WCZYTYWANIE SZKICU Z BAZY DANYCH
@@ -245,7 +243,7 @@ namespace ModelSzkicu {
             _zrodloSzkicu = ZrodloSzkicu.BazaDanych;
             // // //
 
-            return true;
+            return false; //ToDo tmp
         }
         #endregion
 
@@ -253,11 +251,10 @@ namespace ModelSzkicu {
         private IEnumerable<ElementRysunku> ElementySzkicu() {
             var outList = new List<ElementRysunku>();
             Widoki.ForEach(w => {
-                //outList.AddRange(w.LinieKonturowe);
-                //outList.AddRange(w.Luki);
                 w.Kontury.ForEach(k => { outList.AddRange(k.ElementyKonturu); });
                 outList.AddRange(w.Otwory);
                 outList.AddRange(w.Fasolki);
+                // ToDo - add dimensions
             });
             return outList;
         }

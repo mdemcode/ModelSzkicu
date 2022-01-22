@@ -14,6 +14,7 @@ namespace ModelSzkicu {
         public List<Fasolka> Fasolki { get; set; }
         // linie wymiarowe czy całe wymiary ???
         // cechowanie, znakowanie, itp. ...
+        // wysokość / szerokość szkicu
 
         public Widok(TypWidoku typ) {
             Typ = typ;

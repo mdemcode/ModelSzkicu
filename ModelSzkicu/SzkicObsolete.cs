@@ -142,7 +142,6 @@ namespace ModelSzkicu {
         //                break;
         //            default: // inne, nieobsługiwane
         //                do {
-        //                    // ToDo - odczyt innychh bloków
         //                } while (string.IsNullOrEmpty(wierszeDSTV[++wiersz].Split().First()));
         //                break;
         //        }

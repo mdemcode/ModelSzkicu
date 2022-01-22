@@ -8,7 +8,7 @@ namespace ModelSzkicu {
 
     public class LiniaWymiarowa : Linia {
 
-        public enum TypLiniiWymiarowej { glowna, pomocnicza, ukosnik}
+        public enum TypLiniiWymiarowej { glowna, pomocnicza, ukosnik }
         
         public TypLiniiWymiarowej Typ { get; set; }
 

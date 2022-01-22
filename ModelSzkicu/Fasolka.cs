@@ -96,14 +96,15 @@ namespace ModelSzkicu {
                 false
             ));
         }
-
         public override void Przesun(double dx, double dy) {
             CenterPoint.Przesun(dx, dy);
             Kontur.Przesun(dx, dy);
         }
         public override void Skaluj(double wspolczynnik) {
             CenterPoint.Skaluj(wspolczynnik);
-            Fi += wspolczynnik;
+            Fi *= wspolczynnik;
+            Wysokosc *= wspolczynnik;
+            Szerokosc *= wspolczynnik;
             Kontur.Skaluj(wspolczynnik);
         }
 

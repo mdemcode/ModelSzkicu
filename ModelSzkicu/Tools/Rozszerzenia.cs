@@ -11,7 +11,7 @@ namespace ModelSzkicu.Tools {
 
         public static string DigitsOnly(this string value) {
             if (string.IsNullOrEmpty(value)) return value;
-            var arr = value.ToCharArray();
+            char[] arr = value.ToCharArray();
             return arr.Where(item => char.IsNumber(item) || item is '.' or ',' or '-').Aggregate<char, string>(null, (current, item) => current + item);
         }
         public static double GetDouble(this string value) {
@@ -41,9 +41,9 @@ namespace ModelSzkicu.Tools {
                 TypeCode.UInt32 => uint.TryParse(value, out _),
                 TypeCode.Int64 => long.TryParse(value, out _),
                 TypeCode.UInt64 => ulong.TryParse(value, out _),
-                TypeCode.Single => float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out _),
-                TypeCode.Double => double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out _),
-                TypeCode.Decimal => decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out _),
+                TypeCode.Single => float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out _),
+                TypeCode.Double => double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out _),
+                TypeCode.Decimal => decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out _),
                 TypeCode.Boolean => bool.TryParse(value, out _),
                 TypeCode.Char => char.TryParse(value, out _),
                 TypeCode.SByte => sbyte.TryParse(value, out _),

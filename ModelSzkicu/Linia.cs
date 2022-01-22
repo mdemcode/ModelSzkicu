@@ -5,6 +5,8 @@ namespace ModelSzkicu {
 
         public Punkt StartPoint { get; set; }
         public Punkt EndPoint { get; set; }
+        public bool Pozioma => StartPoint.Y == EndPoint.Y;
+        public bool Pionowa => StartPoint.X == EndPoint.X;
 
         public Linia(double x1, double y1, double x2, double y2) {
             StartPoint = x1 < x2 ? new (x1, y1) : new (x2, y2); // - startpoint zawsze po lewej
