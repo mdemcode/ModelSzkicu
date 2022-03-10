@@ -7,6 +7,7 @@ namespace ModelSzkicu {
 
         public Punkt StartPoint {get; set; }
         public Punkt EndPoint { get; set; }
+        public Punkt Ognisko => PoliczOgnisko();
         public double R { get; set; } // dodatni: kierunek clockwise / ujemny: counterclockwise
         public bool Ukryty { get; set; }
 
@@ -32,6 +33,27 @@ namespace ModelSzkicu {
             StartPoint.Skaluj(wspolczynnik);
             EndPoint.Skaluj(wspolczynnik);
             R *= wspolczynnik;
+        }
+        private Punkt PoliczOgnisko() {
+            double x = 0;
+            double y = 0;
+            if (StartPoint.Y < EndPoint.Y && R > 0) { // LG
+                x = EndPoint.X;
+                y = StartPoint.Y;
+            }
+            if (StartPoint.Y > EndPoint.Y && R > 0) { // PG
+                x = StartPoint.X;
+                y = EndPoint.Y;
+            }
+            if (StartPoint.Y > EndPoint.Y && R < 0) { // LD
+                x = EndPoint.X;
+                y = StartPoint.Y;
+            }
+            if (StartPoint.Y < EndPoint.Y && R < 0) { // PD
+                x = StartPoint.X;
+                y = EndPoint.Y;
+            }
+            return new Punkt(x, y);
         }
     }
 }

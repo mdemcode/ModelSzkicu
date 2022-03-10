@@ -49,14 +49,16 @@ namespace ModelSzkicu
 
 
         #region KONSTRUKTOR
-        public Szkic(ZrodloSzkicu zrodlo, string adresPlikuLubIdSzkicuWBazie) {
+        public Szkic(ZrodloSzkicu zrodlo, string adresPlikuLubIdSzkicuWBazie) { // drugi parametr zależny od drugiego (źródła)
             switch (zrodlo) {
                 case ZrodloSzkicu.Pusty:
+                    BledySzkicu.Add(("Błąd aplikacji", "Brak implementacji dla pustego szkicu."));
                     break;
                 case ZrodloSzkicu.PlikNC:
                     if (!WczytajZPlikuNc(adresPlikuLubIdSzkicuWBazie)) return;
                     break;
                 case ZrodloSzkicu.BazaDanych:
+                    BledySzkicu.Add(("Błąd aplikacji", "Brak implementacji szkicu z bazy danych."));
                     break;
                 default:
                     BledySzkicu.Add(("Błąd tworzenia szkicu", "Nieobsługiwane źródło szkicu!"));
@@ -84,10 +86,10 @@ namespace ModelSzkicu
                     case TypBloku.ST:
                         break;
                     case TypBloku.AK: // kontur zewn.
-                        ImportujKonturZmodeluDstv(blok.WierszeBloku, true);
+                        ImportujKonturZmodeluDstv(blok.WierszeBloku, Kontur.TypKonturu.Zewn);
                         break;
                     case TypBloku.IK: // kontur wewn.
-                        ImportujKonturZmodeluDstv(blok.WierszeBloku, false);
+                        ImportujKonturZmodeluDstv(blok.WierszeBloku, Kontur.TypKonturu.Wewn);
                         break;
                     case TypBloku.BO: // otwory / fasolki
                         foreach (string wiersz in blok.WierszeBloku) {
@@ -118,10 +120,10 @@ namespace ModelSzkicu
             });
             return true;
         }
-        private void ImportujKonturZmodeluDstv (string[] wierszeBloku, bool zewn) {
+        private void ImportujKonturZmodeluDstv (string[] wierszeBloku, Kontur.TypKonturu typKonturu) {
             if (!OdczytajTypWidokuZWierszaBloku(wierszeBloku[0], out TypWidoku typWidoku)) return;
-            Kontur.TypKonturu typ = zewn ? Kontur.TypKonturu.Zewn : Kontur.TypKonturu.Wewn;
-            Kontur kontur = new(typ);
+            //Kontur.TypKonturu typ = zewn ? Kontur.TypKonturu.Zewn : Kontur.TypKonturu.Wewn;
+            Kontur kontur = new(typKonturu);
             Punkt poprzPkt = null;
             //Punkt akt_pkt = null;
             double promienLuku = 0d;
@@ -130,10 +132,10 @@ namespace ModelSzkicu
                 if (wiersz.Trim().StartsWith(typWidoku.ToString())) wiersz = wiersz.Trim()[1..]; // odcięcie pierwszwego znaku, jeśli to znak typu widoku (o, v, u, h)
                 string[] rozbityWiersz = wiersz.Split().Where(x => !string.IsNullOrEmpty(x)).ToArray();
                 if ( rozbityWiersz[1].Last() == 't' || rozbityWiersz[1].Last() == 'w') continue; // promienie w narożach - ignoruję
-                var wspPunktu = rozbityWiersz.Select(x => x.DigitsOnly())
+                double[] wspPunktu = rozbityWiersz.Select(x => x.DigitsOnly())
                     .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.GetDouble()).ToArray();
                 // tu trzeba zrobić odczyt parametrów dodatkowych (np. fazy)
-                var aktPkt = new Punkt(wspPunktu[0], wspPunktu[1]);
+                Punkt aktPkt = new(wspPunktu[0], wspPunktu[1]);
                 if (poprzPkt != null) {
                     if (Math.Abs(promienLuku) > 1) { // ignoruję łuki o r < 1 - zamieniam na linię
                         kontur.ElementyKonturu.Add(new Luk(
@@ -152,7 +154,7 @@ namespace ModelSzkicu
                             poprzPkt.Y,
                             aktPkt.X,
                             aktPkt.Y,
-                            true
+                            false
                         ));
                     }
                 }
@@ -176,7 +178,6 @@ namespace ModelSzkicu
             widokSzkicu.Kontury.Add(kontur);
         }
         private void ImportujOtworZmodeluDstv (string wierszBlokuBO) {
-            string [] rozbityWiersz = wierszBlokuBO.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             // widok:
             if (!OdczytajTypWidokuZWierszaBloku(wierszBlokuBO, out TypWidoku typOut)) return;
             //TypWidoku widok;
@@ -193,6 +194,7 @@ namespace ModelSzkicu
             //    return;
             //}
             // parametry otowru:
+            string [] rozbityWiersz = wierszBlokuBO.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             double x = rozbityWiersz[1].DigitsOnly().GetDouble();
             double y = rozbityWiersz[2].DigitsOnly().GetDouble();
             double fi = rozbityWiersz[3].DigitsOnly().GetDouble();
@@ -202,8 +204,6 @@ namespace ModelSzkicu
                 wysokosc = rozbityWiersz[4].DigitsOnly().GetDouble();
                 szerokosc = rozbityWiersz[5].DigitsOnly().GetDouble();
             }
-            bool fasolka = wysokosc > 0.1 || szerokosc > 0.1;
-            Otwor nowyOtwor = fasolka ? new Fasolka(x, y, fi, wysokosc, szerokosc) : new Otwor(x, y, fi);
             Widok widokSzkicu = typOut switch {
                 TypWidoku.o => WidokO,
                 TypWidoku.v => WidokV,
@@ -215,8 +215,12 @@ namespace ModelSzkicu
                 BledySzkicu.Add(("Błąd importu otworu z modelu DSTV", $"Nieobsługiwany typ widoku: '{typOut}"));
                 return;
             }
-            if (fasolka) widokSzkicu.Fasolki.Add((Fasolka)nowyOtwor);
-            else widokSzkicu.Otwory.Add(nowyOtwor);
+            if (wysokosc > 0.1 || szerokosc > 0.1) {
+                widokSzkicu.Fasolki.Add(new Fasolka(x, y, fi, wysokosc, szerokosc));
+            }
+            else {
+                widokSzkicu.Otwory.Add(new Otwor(x, y, fi));
+            }
         }
         private bool OdczytajTypWidokuZWierszaBloku(string wiersz, out TypWidoku typOut) {
             string[] rozbityWiersz = wiersz.Split(' ', StringSplitOptions.RemoveEmptyEntries);

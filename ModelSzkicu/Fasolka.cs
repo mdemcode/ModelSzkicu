@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ModelSzkicu {
-    public class Fasolka : Otwor {
+    public class Fasolka : ElementRysunku {
 
-        public double Wysokosc { get; set; }
-        public double Szerokosc { get; set; }
+        public Punkt CenterPoint { get; set; }
+        public double Fi { get; set; }
+        public double Wysokosc { get; set; } // odległość ognisk
+        public double WysokoscCalk => Wysokosc + Fi;
+        public double Szerokosc { get; set; } // odległość ognisk
+        public double SzerokoscCalk => Szerokosc + Fi;
         public Kontur Kontur { get; set; }
 
-        public Fasolka(double centerX, double centerY, double fi, double wysokosc, double szerokosc) : base(centerX, centerY, fi) {
+        public Fasolka(double centerX, double centerY, double fi, double wysokosc, double szerokosc) {
+            CenterPoint = new(centerX, centerY);
+            Fi = fi;
             Wysokosc = wysokosc;
             Szerokosc = szerokosc;
             UtworzKontur();
@@ -102,10 +108,10 @@ namespace ModelSzkicu {
         }
         public override void Skaluj(double wspolczynnik) {
             CenterPoint.Skaluj(wspolczynnik);
+            Kontur.Skaluj(wspolczynnik);
             Fi *= wspolczynnik;
             Wysokosc *= wspolczynnik;
             Szerokosc *= wspolczynnik;
-            Kontur.Skaluj(wspolczynnik);
         }
 
     }
