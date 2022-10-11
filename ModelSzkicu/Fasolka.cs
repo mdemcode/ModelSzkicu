@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModelSzkicu {
+﻿
+namespace ModelSzkicu
+{
     public class Fasolka : ElementRysunku {
 
         public Punkt CenterPoint { get; set; }

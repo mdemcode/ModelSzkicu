@@ -49,21 +49,33 @@ namespace ModelSzkicu
 
 
         #region KONSTRUKTOR
-        public Szkic(ZrodloSzkicu zrodlo, string adresPlikuLubIdSzkicuWBazie) { // drugi parametr zależny od drugiego (źródła)
-            switch (zrodlo) {
+        public Szkic(ZrodloSzkicu zrodlo, string tekstPliku_adresPliku_idBazy) { // drugi parametr zależny od pierwszego (źródła)
+            switch (zrodlo)
+            {
                 case ZrodloSzkicu.Pusty:
                     BledySzkicu.Add(("Błąd aplikacji", "Brak implementacji dla pustego szkicu."));
                     break;
+                case ZrodloSzkicu.String:
+                    string[] wiersze = tekstPliku_adresPliku_idBazy.Split('\n');
+                    _ = WczytajZWierszy(wiersze);
+                    break;
                 case ZrodloSzkicu.PlikNC:
-                    if (!WczytajZPlikuNc(adresPlikuLubIdSzkicuWBazie)) return;
+                    if (!WczytajZPlikuNc(tekstPliku_adresPliku_idBazy)) return;
                     break;
                 case ZrodloSzkicu.BazaDanych:
                     BledySzkicu.Add(("Błąd aplikacji", "Brak implementacji szkicu z bazy danych."));
+                    break;
+                case ZrodloSzkicu.Wiersze:
+                    BledySzkicu.Add(("Błąd implementacji", "Inicjalizacja szkicu z wierszy w stringu, z niewłaściwego konstruktora!"));
                     break;
                 default:
                     BledySzkicu.Add(("Błąd tworzenia szkicu", "Nieobsługiwane źródło szkicu!"));
                     break;
             }
+        }
+        public Szkic(string[] wiersze) {
+            _zrodloSzkicu = ZrodloSzkicu.Wiersze;
+            WczytajZWierszy(wiersze);
         }
         #endregion
 
@@ -72,6 +84,16 @@ namespace ModelSzkicu
         public bool WczytajZPlikuNc(string adresPlikuNc) {
             _zrodloSzkicu = ZrodloSzkicu.PlikNC;
             _dstvModel = new(adresPlikuNc);
+            if (_dstvModel.WczytanyZBledami) {
+                foreach (var blad in _dstvModel.BledyWczytywania) {
+                    BledySzkicu.Add(("Błąd wczytywania pliku DSTV", blad));
+                }
+                return false;
+            }
+            return WczytajGeometrieZModeluDstv();
+        }
+        public bool WczytajZWierszy(string[] wiersze) {
+            _dstvModel = new(wiersze);
             if (_dstvModel.WczytanyZBledami) {
                 foreach (var blad in _dstvModel.BledyWczytywania) {
                     BledySzkicu.Add(("Błąd wczytywania pliku DSTV", blad));
@@ -253,7 +275,7 @@ namespace ModelSzkicu
 
         #region METODY POMOCNICZE
         private IEnumerable<ElementRysunku> ElementySzkicu() {
-            var outList = new List<ElementRysunku>();
+            List<ElementRysunku> outList = new ();
             Widoki.ForEach(w => {
                 w.Kontury.ForEach(k => { outList.AddRange(k.ElementyKonturu); });
                 outList.AddRange(w.Otwory);
@@ -267,6 +289,8 @@ namespace ModelSzkicu
 
         public enum ZrodloSzkicu {
             Pusty,
+            String,
+            Wiersze,
             PlikNC,
             BazaDanych
         }
