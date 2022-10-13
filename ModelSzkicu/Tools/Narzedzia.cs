@@ -30,7 +30,7 @@ namespace ModelSzkicu.Tools {
                         break;
                     case Otwor:
                         Otwor otwor = elemSzkicu as Otwor;
-                        graphics.DrawEllipse(pen, (float)otwor.CenterPoint.X, (float)otwor.CenterPoint.Y, (float)otwor.Dx, (float)otwor.Dy);
+                        graphics.DrawEllipse(pen, (float)otwor.CenterPoint.X * 0.1f, (float)otwor.CenterPoint.Y * 0.1f, (float)otwor.Dx * 0.1f, (float)otwor.Dy * 0.1f );
                         break;
                     default:
                         break;
@@ -47,7 +47,7 @@ namespace ModelSzkicu.Tools {
 
             }
 
-            return File.Exists("C:\\Szkic.png");
+            return File.Exists("C:\\Temp\\Szkic.png");
         }
         static void tmp()
         {
